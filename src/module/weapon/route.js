@@ -1,4 +1,5 @@
 const controller = require("./controller");
+const Joi = require('joi')
 
 module.exports = server => {
   server.route([
@@ -15,7 +16,16 @@ module.exports = server => {
     {
       method: "POST",
       path: "/weapons",
-      handler: controller.create
+      handler: controller.create,
+      options: {
+        validate: {
+            payload: {
+                name: Joi.string().min(1).max(50).required(),
+                serial: Joi.string().required(),
+                amount: Joi.number().required()
+            }
+        }
+      }
     },
     {
       method: "PUT",
